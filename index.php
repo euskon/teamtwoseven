@@ -1,6 +1,6 @@
 <?php
-  include("config.php");
-  include("data.php");
+  require "config.php";
+  require "data.php";
   $page = $_GET["page"];
   session_start();
   $loggedIn = false;
@@ -67,7 +67,7 @@
       <div class="row content">
         <div class="col-sm-2 sidenav">
           <hr>
-          <?php include('navbar.php');?>
+          <?php require 'navbar.php';?>
           <hr>
         </div>
         <!-- Start content items. Listed by date. -->
@@ -80,8 +80,9 @@
           <!-- Show login page -->
           <?php
             if (!$loggedIn && $page != 'createUser') {
-              include('login.php');
-              die();
+              require 'login.php';
+              // This will kill the footer loading. Safer? Maybe.
+              //die();
             } else {
               // User the page variable to set the body of the page.
               switch ($page) {
