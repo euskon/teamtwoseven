@@ -1,8 +1,15 @@
 <!-- Begin Navigation Bar-->
 
 <!-- SELECT Team name user is on. or show Project Logger -->
-<h4><span class="glyphicon glyphicon-pencil"></span> Team Two-Seven</h4>
-
+<?php
+  if ($loggedIn) {
+    // Get Team name
+    echo '<h4><span class="glyphicon glyphicon-pencil"></span> Team</h4>';
+  } else {
+    echo '<h4><span class="glyphicon glyphicon-pencil"></span> Welcome</h4>';
+  }
+?>
+<!-- SELECT Team name user is on. or show Project Logger -->
 
 <!-- Show home button -->
 <ul class="nav nav-pills nav-stacked">
@@ -16,24 +23,29 @@
     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Projects
       <span class="caret"></span></a>
     <ul class="dropdown-menu">
-      <li><a href="./">Logger</a></li>
-      <li><a href="./">LaserPI</a></li>
-      <li><a href="./">Rolling Dice: For Dummies</a></li>
+      <!-- If logged in. SELECT * FROM Projects WHERE TEAM = myTeam -->
+      <li><a href="./">Empty</a></li>
+      <!-- End If logged in. SELECT * FROM Projects WHERE TEAM = myTeam -->
     </ul>
   </li>
 <!-- End Show projects the user is assigned to -->
 
 <!-- Show team members? -->
-<li <?php if (basename($_SERVER['PHP_SELF']) == 'permissions.php') { echo 'class="active"'; } ?>>
+<li <?php if ($page == 'teamMembers') { echo 'class="active"'; } ?>>
   <a href="./">Team Members</a></li>
 <!-- End Show team members? -->
 
 <!-- Show logout button if logged in -->
 <?php if ($loggedIn) { ?>
-<li <?php if (basename($_SERVER['PHP_SELF']) == 'logout.php') { echo 'class="active"'; } ?>>
-  <a href="logout.php">Logout</a></li>
+<li <?php if ($page == 'logout') { echo 'class="active"'; } ?>>
+  <a href="index.php?page=logout">Logout</a></li>
 <?php } ?>
 <!-- End Show logout button if logged in -->
+
+<!-- Show demo button -->
+<li <?php if (basename($_SERVER['PHP_SELF']) == 'demo.php') { echo 'class="active"'; } ?>>
+  <a href="demo.php">Demo</a></li>
+<!-- End Show demo button -->
 
 </ul><br>
 <!-- End Navigation Bar-->

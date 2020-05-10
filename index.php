@@ -1,13 +1,10 @@
 <?php
   include("config.php");
   include("data.php");
+  $page = $_GET["page"];
   session_start();
   $loggedIn = false;
-  //print_r($_SESSION);
-  //
-  // Check if already logged in.
   $username = $_SESSION['username'];
-  //echo "Session user: " . $user_check . "<br>";
   $sql = "SELECT userID, name FROM Users WHERE name = '$username'";
   $result = $db->query($sql);
   if ($result->num_rows > 0) {
@@ -18,19 +15,14 @@
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = mysqli_real_escape_string($db, $_POST['username']);
     $password = mysqli_real_escape_string($db, $_POST['password']);
-    //echo "Username: " . $_POST['username'] . "<br>";
-    //echo "Password: " . $_POST['password'] . "<br>";
 
     $sql = "SELECT userID FROM Users WHERE name = '$username' and password = '$password'";
-    //echo "Query: ". $sql . "<br>";
     $result = $db->query($sql);
     $valid = $result->num_rows;
-    //echo "Returned: ". $valid . " rows.<br>";
 
     if($valid == 1) {
       $_SESSION['username'] = $username;
       $loggedIn = true;
-      //echo "Session name: " . $_SESSION['login_user'] . "<br>";
     } else {
       echo "Invalid login!";
     }
@@ -85,17 +77,24 @@
           <hr>
         </div>
         <div class="col-sm-10">
-<!-- Show login page -->
-<?php
-  if (!$loggedIn) {
-    include('login.php');
-    die();
-  } else {
-    echo "Welcome " . $username . "!";
-    //include('body.php');
-  }
-?>
-<!-- End Show login page -->
+          <!-- Show login page -->
+          <?php
+            if (!$loggedIn && $page != 'createUser') {
+              include('login.php');
+              die();
+            } else {
+              // User the page variable to set the body of the page.
+              switch ($page) {
+                case 'createUser':
+                  require 'createUser.php';
+                  break;
+                case 'logout':
+                  require 'logout.php';
+                  break;
+              }
+            }
+          ?>
+          <!-- End Show login page -->
           <hr>
         </div>
         <!-- End content items. Listed by date. --!>
