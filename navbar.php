@@ -13,7 +13,7 @@
 
 <!-- Show home button -->
 <ul class="nav nav-pills nav-stacked">
-<li <?php if (basename($_SERVER['PHP_SELF']) == 'index.php') { echo 'class="active"'; } ?>>
+<li <?php if (!$page) { echo 'class="active"'; } ?>>
   <a href="index.php"> <span class="glyphicon glyphicon-home"></span> Home</a></li>
 <!-- End Show home button -->
 
@@ -43,8 +43,8 @@
 <!-- End Show logout button if logged in -->
 
 <!-- Show demo button -->
-<li <?php if (basename($_SERVER['PHP_SELF']) == 'demo.php') { echo 'class="active"'; } ?>>
-  <a href="demo.php">Demo</a></li>
+<li <?php if ($page == 'demo') { echo 'class="active"'; } ?>>
+  <a href="index.php?page=demo">Demo All Data</a></li>
 <!-- End Show demo button -->
 
 </ul><br>
