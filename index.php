@@ -1,33 +1,24 @@
 <?php
+  error_reporting(E_ALL);
+  $debugShow = false;
+  $debug = array();
+  session_start();
   require "config.php";
   require "data.php";
-  $page = $_GET["page"];
-  session_start();
-  $loggedIn = false;
-  $username = $_SESSION['username'];
-  $sql = "SELECT userID, name FROM Users WHERE name = '$username'";
-  $result = $db->query($sql);
-  if ($result->num_rows > 0) {
-    $loggedIn = true;
-  }
+  require "functions.php";
 
-  // Check if the login form was submitted
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = mysqli_real_escape_string($db, $_POST['username']);
-    $password = mysqli_real_escape_string($db, $_POST['password']);
-
-    $sql = "SELECT userID FROM Users WHERE name = '$username' and password = '$password'";
-    $result = $db->query($sql);
-    $valid = $result->num_rows;
-
-    if($valid == 1) {
-      $_SESSION['username'] = $username;
-      $loggedIn = true;
-    } else {
-      echo "Invalid login!";
-    }
+    // a form was submitted...
+    $debug['CheckPost'] = "called";
+    checkPost();
   }
+
+  list($loggedIn, $userID, $username, $teamID, $teamname) = checkLogin();
+
+  $page = getPagination();
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -39,20 +30,16 @@
     <meta charset="UTF-8">
     <title>Team Two Seven</title>
     <style>
-      /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
       .row.content {height: 900px}
-      /* Set gray background color and 100% height */
       .sidenav {
         background-color: #f1f1f1;
         height: 100%;
       }
-      /* Set black background color, white text and some padding */
       footer {
         background-color: #555;
         color: white;
         padding: 15px;
       }
-      /* On small screens, set height to 'auto' for sidenav and grid */
       @media screen and (max-width: 767px) {
         .sidenav {
           height: auto;
@@ -79,29 +66,48 @@
         <div class="col-sm-10">
           <!-- Show login page -->
           <?php
-            if (!$loggedIn && $page != 'createUser') {
+            if (!$loggedIn && $page != "createUser") {
               require 'login.php';
-              // This will kill the footer loading. Safer? Maybe.
-              //die();
             } else {
-              // User the page variable to set the body of the page.
               switch ($page) {
                 case 'createUser':
                   require 'createUser.php';
                   break;
+                case 'createLogs':
+                  require 'createLogs.php';
+                  break;
+                case 'showLogs':
+                  require 'showLogs.php';
+                  break;
+                case 'editLog':
+                  require 'editLog.php';
+                  break;
+                case 'deleteLog':
+                  require 'deleteLog.php';
+                  break;
+                case 'demo':
+                  require 'demo.php';
+                  break;
                 case 'logout':
                   require 'logout.php';
+                  break;
+                default:
+                  echo "Welcome $username! You are on team $teamname.";
                   break;
               }
             }
           ?>
           <!-- End Show login page -->
-          <hr>
         </div>
         <!-- End content items. Listed by date. --!>
       </div>
     </div>
     <footer class="container-fluid">
+      <?php //Debug
+        if ($debugShow) {
+          print_r($debug);
+        }
+      ?>
       <p>Site layout by <a href="https://www.w3schools.com/bootstrap/">w3 Schools</a></p>
     </footer>
   </body>

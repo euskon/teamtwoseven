@@ -56,12 +56,12 @@ if ($db->connect_errno) {
     FOREIGN KEY (teamID) REFERENCES Teams(teamID) ON DELETE CASCADE,
     FOREIGN KEY (projectID) REFERENCES Projects(projectID) ON DELETE CASCADE)";
 
-  $sqlTest[6] = "SELECT 1 FROM 'LogFor' LIMIT 1";
+  $sqlTest[6] = "SELECT * FROM 'LogFor' LIMIT 1";
   $sqlTable[6] = "CREATE TABLE LogFor (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    teamID INT,
+    projectID INT,
     logID INT,
-    FOREIGN KEY (teamID) REFERENCES Teams(teamID) ON DELETE CASCADE,
+    FOREIGN KEY (projectID) REFERENCES Project(projectID) ON DELETE CASCADE,
     FOREIGN KEY (logID) REFERENCES Logs(logID) ON DELETE CASCADE)";
 
   $sqlTest[7] = "SELECT 1 FROM 'ParticipantOf' LIMIT 1";
@@ -74,15 +74,16 @@ if ($db->connect_errno) {
 
   $count = 0;
 
+  /*
   foreach ($sqlTest as &$test) {
     $result = $db->query($test);
     if ($result->num_rows > 0) {
       // exists
       echo "Exists...";
     } else {
-      //echo $sqlTable[$count];
       $db->query($sqlTable[$count]);
     }
     $count++;
   }
+   */
 ?>

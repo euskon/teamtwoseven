@@ -1,3 +1,11 @@
+<?php
+  if ($invalidLogin) {
+    //TODO:Jon Bigger and red?
+    echo "Invalid login...";
+  } else if ($createdLogin) {
+    echo "Login created... login below...";
+  }
+?>
 <div class = "row">
   <div class = "col-sm-4">
     <form id = "login" action = "" method = "post">
